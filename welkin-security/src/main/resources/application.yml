@@ -1,0 +1,6 @@
+spring:
+  session:
+    store-type: redis
+    ## Session 存储到 Redis 键的前缀
+    redis:
+      namespace: welkin:spring:session
