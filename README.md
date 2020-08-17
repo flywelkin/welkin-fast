@@ -21,3 +21,10 @@
 - JDK8.0
 - mysql5.7以上
 - Redis5.0.3
+
+### 使用说明
+
+&emsp;&emsp;项目使用SpringBoot数据库初始化功能，启动前只需要操作一下步骤：
+
+1. 修改Mysql和Redis配置
+2. 创建数据库
