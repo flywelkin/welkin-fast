@@ -1,14 +1,14 @@
 package io.gitee.welkinfast.security;
 
 
-import io.gitee.welkinfast.security.entity.DefaultUserDetails;
+import io.gitee.welkinfast.security.entity.CustomUserDetails;
 
 /**
- * @Description TODO
+ * @Description 获取用户信息接口定义
  * @Author yuanjg
  * @CreateTime 2020/08/16 12:55
  * @Version 1.0.0
  */
 public interface LoginUserService {
-    public DefaultUserDetails getUserByUsername(String userName);
+    CustomUserDetails getUserByUsername(String userName);
 }

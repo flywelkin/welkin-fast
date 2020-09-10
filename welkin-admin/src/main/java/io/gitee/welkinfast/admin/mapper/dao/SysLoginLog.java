@@ -22,7 +22,7 @@ public class SysLoginLog implements Serializable {
     /**
      * 编号
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**

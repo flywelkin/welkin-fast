@@ -1,7 +1,7 @@
 package io.gitee.welkinfast.common.error;
 
-public interface CommonError {
+public interface CustomError {
     int getErrorCode();
     String getErrorMsg();
-    CommonError setErrorMsg(String errMsg);
+    CustomError setErrorMsg(String errMsg);
 }

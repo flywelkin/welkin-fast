@@ -24,7 +24,8 @@
         last_update_by, last_update_time, del_flag
     </sql>
     <select id="getByUserId" resultMap="BaseResultMap">
-        select sys_menu.id,
+        select distinct
+               sys_menu.id,
                sys_menu.`name`,
                sys_menu.parent_id,
                sys_menu.url,
@@ -39,6 +40,7 @@
         from sys_role_menu
                  join sys_user_role on sys_user_role.role_id = sys_role_menu.role_id
             and sys_user_role.user_id = #{userid}
-                 join sys_menu on sys_menu.id = sys_role_menu.menu_id
+                 join sys_menu on sys_menu.id = sys_role_menu.menu_id  and sys_menu.del_flag = 0
+        order by sys_menu.order_num
     </select>
 </mapper>

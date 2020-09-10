@@ -1,6 +1,6 @@
 package io.gitee.welkinfast.admin.config;
 
-import com.google.common.collect.Lists;
+import io.gitee.welkinfast.common.response.CustomResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -9,7 +9,6 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
@@ -33,20 +32,24 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         ParameterBuilder ticketPar = new ParameterBuilder();
-        ticketPar.name("Authorization").description("认证token")
+        ticketPar.name("user_token").description("认证token")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 //header中的ticket参数非必填，传空也可以
                 .required(false).build();
         List<Parameter> pars = new ArrayList();
         //根据每个方法名也知道当前方法在设置什么参数
         pars.add(ticketPar.build());
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.SPRING_WEB)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("io.gitee.welkinfast.admin.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                .globalOperationParameters(pars);
+                .globalOperationParameters(pars)
+                //.forCodeGeneration(true)
+                //遇到对应泛型类型的外围类，直接解析成泛型类型，WelkinResult<T>，应该直接输出成类型T
+                .genericModelSubstitutes(CustomResponse.class);
+
     }
 
     private ApiInfo apiInfo() {

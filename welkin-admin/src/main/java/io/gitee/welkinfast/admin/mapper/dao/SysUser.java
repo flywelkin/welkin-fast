@@ -22,14 +22,14 @@ public class SysUser implements Serializable {
     /**
      * 编号
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
      * 用户名
      */
-    @TableField(value = "login_name")
-    private String loginName;
+    @TableField(value = "user_name")
+    private String userName;
 
     /**
      * 昵称
@@ -114,7 +114,7 @@ public class SysUser implements Serializable {
 
     public static final String COL_ID = "id";
 
-    public static final String COL_LOGIN_NAME = "login_name";
+    public static final String COL_USER_NAME = "user_name";
 
     public static final String COL_NICK_NAME = "nick_name";
 

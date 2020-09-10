@@ -13,5 +13,29 @@ import java.util.List;
  */
 public interface SysRoleMenuService extends IService<SysRoleMenu> {
 
-    void updateRoleMenu(List<SysRoleMenu> sysRoleMenus);
+    /**
+     * 为角色添加权限信息
+     *
+     * @param roleId 角色ID
+     * @param menus  权限ID集合
+     */
+    void addRoleMenu(String roleId, List<String> menus);
+
+    /**
+     * 为角色更新权限信息
+     *
+     * @param roleId 角色ID
+     * @param menus  权限ID集合
+     */
+    void updateRoleMenu(String roleId, List<String> menus);
+
+
+    /**
+     * 根据角色ID删除权限
+     *
+     * @param roleId 角色ID
+     */
+    void deleteMenuByRoleId(String roleId);
+
+    List<SysRoleMenu> getByRoleId(String roleId);
 }

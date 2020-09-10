@@ -3,11 +3,14 @@ package io.gitee.welkinfast.admin.controller;
 import io.gitee.welkinfast.admin.controller.vo.DeptVo;
 import io.gitee.welkinfast.admin.mapper.dao.SysDept;
 import io.gitee.welkinfast.admin.service.SysDeptService;
-import io.gitee.welkinfast.common.response.WelkinResult;
+import io.gitee.welkinfast.common.page.PageRequest;
+import io.gitee.welkinfast.common.page.PageResult;
+import io.gitee.welkinfast.common.response.CustomResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @CreateTime 2020/08/14 19:14
  * @Version 1.0.0
  */
-@Api(description = "部门管理")
+@Api(tags  = "部门管理")
 @RestController
 public class SysDeptController {
 
@@ -25,34 +28,46 @@ public class SysDeptController {
     private SysDeptService sysDeptService;
 
     @ApiOperation("根据ID获取部门信息")
+    @PreAuthorize("hasAuthority('sys:dept:view')")
     @GetMapping("/dept/{id}")
-    public WelkinResult getById(@PathVariable("id") String id) {
+    public CustomResponse getById(@PathVariable("id") String id) {
         SysDept sysDept = sysDeptService.getDeptById(id);
         DeptVo deptVo = dao2Vo(sysDept);
-        return WelkinResult.OK(deptVo);
+        return CustomResponse.OK(deptVo);
     }
 
     @ApiOperation("保存部门信息")
+    @PreAuthorize("hasAuthority('sys:dept:add')")
     @PostMapping("/dept")
-    public WelkinResult save(@Validated @RequestBody DeptVo deptVo) {
+    public CustomResponse save(@Validated @RequestBody DeptVo deptVo) {
         SysDept sysDept = vo2Dao(deptVo);
         sysDeptService.saveDept(sysDept);
-        return WelkinResult.OK("保存成功");
+        return CustomResponse.OK("保存成功");
     }
 
     @ApiOperation("根据ID更新部门信息")
+    @PreAuthorize("hasAuthority('sys:dept:update')")
     @DeleteMapping("/dept")
-    public WelkinResult updateById(@Validated @RequestBody DeptVo deptVo) {
+    public CustomResponse updateById(@Validated @RequestBody DeptVo deptVo) {
         SysDept sysDept = vo2Dao(deptVo);
         sysDeptService.updateDept(sysDept);
-        return WelkinResult.OK("更新成功");
+        return CustomResponse.OK("更新成功");
     }
 
     @ApiOperation("根据ID删除部门信息")
+    @PreAuthorize("hasAuthority('sys:dept:delete')")
     @PutMapping("/dept/{id}")
-    public WelkinResult deleteById(@PathVariable("id") String id) {
+    public CustomResponse deleteById(@PathVariable("id") String id) {
         sysDeptService.deleteById(id);
-        return WelkinResult.OK("删除成功");
+        return CustomResponse.OK("删除成功");
+    }
+
+    @ApiOperation("分页获取用户信息列表")
+    @PreAuthorize("hasAuthority('sys:dept:list')")
+    @PostMapping("/dept/list")
+    public CustomResponse<PageResult<SysDept>> getUserList(@RequestBody PageRequest<DeptVo> pageRequest) {
+        PageResult<SysDept> result = sysDeptService.getUserList(pageRequest);
+        return CustomResponse.OK(result);
     }
 
     private DeptVo dao2Vo(SysDept sysDept) {

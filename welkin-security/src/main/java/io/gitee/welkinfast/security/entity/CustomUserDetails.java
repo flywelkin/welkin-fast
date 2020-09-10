@@ -1,20 +1,33 @@
 package io.gitee.welkinfast.security.entity;
 
+import io.gitee.welkinfast.security.properties.CustomSecurityProperties;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description TODO
+ * @Description 自定义用户详细信息
  * @Author yuanjg
  * @CreateTime 2020/08/16 12:57
  * @Version 1.0.0
  */
-public class DefaultUserDetails {
+public class CustomUserDetails {
 
     private String id;
     private String username;
     private String password;
+    private List<String> roles;
     private List<String> permissions;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public String getUsername() {
         return username;
@@ -32,9 +45,17 @@ public class DefaultUserDetails {
         this.password = password;
     }
 
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
     public List<String> getPermissions() {
         if (permissions == null) {
-            return new ArrayList();
+            return new ArrayList<String>();
         }
         return permissions;
     }
@@ -43,12 +64,17 @@ public class DefaultUserDetails {
         this.permissions = permissions;
     }
 
-    public String getId() {
-        return id;
+
+    public boolean isAdmin() {
+        if (roles != null) {
+            for (String role : roles) {
+                if (StringUtils.equalsIgnoreCase(role, CustomSecurityProperties.ADMIN_ROLE)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
 }

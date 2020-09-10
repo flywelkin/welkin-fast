@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Description TODO
@@ -14,18 +15,20 @@ import java.io.Serializable;
  * @CreateTime 2020/08/16 16:55
  * @Version 1.0.0
  */
-@ApiModel(value = "io-gitee-welkinfast-admin-controller-vo-SaveUserVo")
+@ApiModel(value = "SaveUserVo")
 @Data
 public class SaveUserVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
+
+    private String Id;
 
     /**
      * 用户名
      */
     @NotNull(message = "用户名不能为空")
     @ApiModelProperty(value = "用户名")
-    private String loginName;
+    private String userName;
 
     /**
      * 密码
@@ -64,6 +67,9 @@ public class SaveUserVo implements Serializable {
     private String mobile;
 
 
+    @ApiModelProperty(value = "账号状态")
+    private Integer status;
+
     /**
      * 机构ID
      */
@@ -71,6 +77,8 @@ public class SaveUserVo implements Serializable {
     @ApiModelProperty(value = "机构ID")
     private String deptId;
 
+    @ApiModelProperty(value = "角色集合ID")
+    private List<String> roleIds;
 }
 
 

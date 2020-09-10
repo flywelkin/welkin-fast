@@ -1,11 +1,17 @@
 package io.gitee.welkinfast.security.filter;
 
 import io.gitee.welkinfast.security.entity.CustomPayload;
-import io.gitee.welkinfast.security.entity.DefaultUserDetails;
+import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.security.handler.CustomAuthenticationEntryPoint;
 import io.gitee.welkinfast.security.jwt.JwtTokenService;
-import lombok.extern.slf4j.Slf4j;
+import io.gitee.welkinfast.security.properties.CustomSecurityProperties;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,31 +31,31 @@ import java.util.stream.Collectors;
  * @CreateTime 2020/08/16 11:23
  * @Version 1.0.0
  */
-@Slf4j
 @Service
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String AUTHENTICATION_PREFIX = "Bearer ";
-    private static final String AUTHENTICATION_KEY = "Authorization";
+    private final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     @Autowired
+    private CustomSecurityProperties customSecurityProperties;
+    @Autowired
     private JwtTokenService JwtTokenService;
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // 如果已经通过认证
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            chain.doFilter(request, response);
-            return;
-        }
         //请求体的头中是否包含Authorization
-        String header = request.getHeader(AUTHENTICATION_KEY);
-        if (header != null && header.startsWith(AUTHENTICATION_PREFIX)) {
+        String header = request.getHeader(customSecurityProperties.getAuthKey());
+        if (header != null) {
             //获取权限失败，会抛出异常
-            UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
-            //获取后，将Authentication写入SecurityContextHolder中供后序使用
-            if (authentication != null) {
+            try {
+                UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (AuthenticationException e) {
+                logger.warn("无效的token认证,{}", e.getMessage());
+                customAuthenticationEntryPoint.commence(request, response, e);
+                return;
             }
         }
         chain.doFilter(request, response);
@@ -58,21 +64,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * 通过token，获取用户信息
      *
-     * @param bearerToken
-     * @return UsernamePasswordAuthenticationToken
+     * @param bearerToken 令牌
+     * @return UsernamePasswordAuthenticationToken 用户认证信息
      */
     private UsernamePasswordAuthenticationToken getAuthentication(String bearerToken) {
-        if (bearerToken != null) {
-            //通过token解析出载荷信息
-            String token = bearerToken.replace(AUTHENTICATION_PREFIX, "");
-            CustomPayload<DefaultUserDetails> payload = JwtTokenService.getInfoFromToken(token, DefaultUserDetails.class);
-            DefaultUserDetails user = payload.getUserInfo();
+        if (StringUtils.isEmpty(bearerToken)) {
+            throw new BadCredentialsException("token is null");
+        }
+        //通过token解析出载荷信息
+        try {
+            CustomPayload<CustomUserDetails> payload = JwtTokenService.getInfoFromToken(bearerToken, CustomUserDetails.class);
+            CustomUserDetails user = payload.getUserInfo();
             //判断是否已经过期
-            boolean expiration = JwtTokenService.isExpiration(token);
-            //userInfo为null 或 token过期
+            boolean expiration = JwtTokenService.isExpiration(bearerToken);
             if (user == null && expiration) {
-                return null;
+                throw new BadCredentialsException("token is expiration");
             }
+            String adminRole = customSecurityProperties.getAdminRole();
             List<String> permissions = user.getPermissions();
             List<GrantedAuthority> grantedAuthoritys = permissions.stream().map(item -> {
                 return new GrantedAuthority() {
@@ -83,7 +91,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 };
             }).collect(Collectors.toList());
             return new UsernamePasswordAuthenticationToken(user, null, grantedAuthoritys);
+        } catch (Exception e) {
+            throw new BadCredentialsException(e.getMessage());
         }
-        return null;
     }
 }

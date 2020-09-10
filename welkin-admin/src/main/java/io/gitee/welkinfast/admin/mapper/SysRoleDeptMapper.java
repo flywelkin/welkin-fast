@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.gitee.welkinfast.admin.mapper.dao.SysRoleDept;
 
 /**
- * @Description TODO
+ * @Description 角色部门关系信息数据持久层接口
  * @Author yuanjg
  * @CreateTime 2020/08/13 15:41
  * @Version 1.0.0

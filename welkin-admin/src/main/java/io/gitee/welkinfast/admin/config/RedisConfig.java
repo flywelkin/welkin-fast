@@ -26,6 +26,7 @@ import java.time.Duration;
  */
 @Configuration
 public class RedisConfig {
+
     /**
      * RedisTemplate配置
      */

@@ -1,11 +1,12 @@
 package io.gitee.welkinfast.security.handler;
 
-import io.gitee.welkinfast.common.response.WelkinResult;
+import io.gitee.welkinfast.common.response.CustomResponse;
 import io.gitee.welkinfast.security.LoginUserService;
-import io.gitee.welkinfast.security.entity.DefaultUserDetails;
+import io.gitee.welkinfast.security.entity.CustomUserDetails;
 import io.gitee.welkinfast.security.jwt.JwtTokenService;
 import io.gitee.welkinfast.security.util.ServletUtils;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -23,10 +24,10 @@ import java.io.IOException;
  * @CreateTime 2020/08/15 14:03
  * @Version 1.0.0
  */
-
-@Slf4j
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(LoginSuccessHandler.class);
 
     @Autowired
     private LoginUserService loginUserService;
@@ -36,9 +37,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         User principal = (User) authentication.getPrincipal();
-        DefaultUserDetails defaultUserDetails = loginUserService.getUserByUsername(principal.getUsername());
-        String jwt = JwtTokenService.createJwt(defaultUserDetails);
-        // TODO 登录成功 记录日志
-        ServletUtils.render(request, response, WelkinResult.OK(jwt));
+        CustomUserDetails customUserDetails = loginUserService.getUserByUsername(principal.getUsername());
+        customUserDetails.setPassword(null);
+        String jwt = JwtTokenService.createJwt(customUserDetails);
+        ServletUtils.render(response, CustomResponse.OK(jwt));
     }
 }

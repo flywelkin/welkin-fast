@@ -7,14 +7,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @Description TODO
+ * @Description 角色菜单
  * @Author yuanjg
  * @CreateTime 2020/08/13 15:41
  * @Version 1.0.0
- */
-
-/**
- * 角色菜单
  */
 @Data
 @TableName(value = "sys_role_menu")
@@ -22,7 +18,7 @@ public class SysRoleMenu implements Serializable {
     /**
      * 编号
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**

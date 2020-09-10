@@ -1,4 +1,4 @@
-package io.gitee.welkinfast.admin.config;
+package io.gitee.welkinfast.admin.config.mybatisplus;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;

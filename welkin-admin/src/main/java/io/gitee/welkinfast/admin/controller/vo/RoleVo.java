@@ -6,53 +6,32 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-@ApiModel(value = "io-gitee-welkinfast-admin-controller-vo-RoleVo")
+@ApiModel(value = "角色信息")
 @Data
 public class RoleVo implements Serializable {
-    /**
-     * 编号
-     */
-    @ApiModelProperty(value = "编号")
-    private String id;
-
-    /**
-     * 角色名称
-     */
-    @ApiModelProperty(value = "角色名称")
-    private String name;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value = "备注")
-    private String remark;
-
-    /**
-     * 创建人
-     */
-    @ApiModelProperty(value = "创建人")
-    private String createBy;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-    /**
-     * 更新人
-     */
-    @ApiModelProperty(value = "更新人")
-    private String lastUpdateBy;
-
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty(value = "更新时间")
-    private Date lastUpdateTime;
-
 
     private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "编号")
+    private String id;
+    @ApiModelProperty(value = "角色名称")
+    private String name;
+    @ApiModelProperty(value = "角色标识")
+    private String roleKey;
+    @ApiModelProperty(value = "备注")
+    private String remark;
+    @ApiModelProperty(value = "创建人")
+    private String createBy;
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+    @ApiModelProperty(value = "更新人")
+    private String lastUpdateBy;
+    @ApiModelProperty(value = "更新时间")
+    private Date lastUpdateTime;
+    private List<String> menuIds;
+
+
 }
 

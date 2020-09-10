@@ -1,7 +1,7 @@
 package io.gitee.welkinfast.security.config;
 
 
-import io.gitee.welkinfast.security.DefaultUserDetailsService;
+import io.gitee.welkinfast.security.DefaultUserDetailsServiceImpl;
 import io.gitee.welkinfast.security.filter.JwtAuthenticationFilter;
 import io.gitee.welkinfast.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
- * 401 需要登录或者说没有通过认证
- * 403 没有权限，服务器受到请求但拒绝提供服务
  *
- * @Description
+ * @Description Spring Security 配置类
  * @Author yuanjg
  * @CreateTime 2020/08/15 14:15
  * @Version 1.0.0
@@ -31,28 +35,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private DefaultUserDetailsService userDetailsService;
-    //登出成功的处理
+    private DefaultUserDetailsServiceImpl userDetailsService;
     @Autowired
-    private LoginFailureHandler loginFailureHandler;
-    //登录成功的处理
+    public LoginSuccessHandler loginSuccessHandler;
     @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
-    //登出成功的处理
+    public LoginFailureHandler loginFailureHandler;
     @Autowired
-    private LogoutSuccessHandler logoutSuccessHandler;
-    //未登录的处理
+    public LogoutSuccessHandler logoutSuccessHandler;
     @Autowired
-    private AnonymousAuthenticationEntryPoint anonymousAuthenticationEntryPoint;
-
+    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    public CustomAccessDeniedHandler customAccessDeniedHandler;
+    @Autowired
+    public JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    public SecurityWhitelistHandler securityWhitelistHandler;
 
     /**
      * 配置认证方式等
      *
-     * @param auth
-     * @throws Exception
+     * @param auth 身份验证管理器
+     * @throws Exception 异常信息
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -60,57 +63,60 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(bCryptPasswordEncoder());
     }
 
-    /**
-     * 密码编码器
-     *
-     * @return
-     */
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     /**
      * http相关的配置，包括登入登出、异常处理、会话管理等
      *
-     * @param http
-     * @throws Exception
+     * @param http HttpSecurity
+     * @throws Exception Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
-        http.authorizeRequests()
-                // 放行接口
-                .antMatchers("/login", "/", "/*.html", "/**/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/images/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/configuration/ui").permitAll()
-                .antMatchers("/configuration/security").permitAll()
-                .antMatchers("/csrf").permitAll()
-                .anyRequest().authenticated()
+        securityWhitelistHandler.handle(http)
                 // 异常处理(匿名访问异常，无权限异常)
-                .and().exceptionHandling()
-                .authenticationEntryPoint(anonymousAuthenticationEntryPoint)
-                //.accessDeniedHandler(accessDeniedHandler)
-                // 当用户无权访问资源时发送 401 响应
-                //.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                // 当用户访问资源因权限不足时发送 403 响应
-                //.accessDeniedHandler(securityProblemSupport)
-                // 登入，允许所有用户
-                .and().formLogin().permitAll()//
+                .exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler)
+                // 登入,允许所有用户
+                .and().formLogin().permitAll()
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
-                // 登出
+                // 退出 允许所有用户退出
                 .and().logout().permitAll()
                 .logoutSuccessHandler(logoutSuccessHandler)
+                //jwt 认证过滤器
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // session 生成策略用无状态策略
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
+    /**
+     * 密码编码器
+     *
+     * @return BCryptPasswordEncoder
+     */
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Collections.singletonList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        // 暴露 header 中的其他属性给客户端应用程序
+        config.setExposedHeaders(Arrays.asList(
+                "Authorization", "X-Total-Count", "Link",
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials"
+        ));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
 }

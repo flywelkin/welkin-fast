@@ -6,7 +6,7 @@
         <!--@Table sys_dept-->
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="parent_id" jdbcType="VARCHAR" property="parentId"/>
         <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>

@@ -5,7 +5,7 @@
         <!--@mbg.generated-->
         <!--@Table sys_user-->
         <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
@@ -22,7 +22,12 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `login_name`, nick_name, avatar, `password`, salt, email, mobile, `status`, dept_id,
+        id, `user_name`, nick_name, avatar, `password`, salt, email, mobile, `status`, dept_id,
+        create_by, create_time, last_update_by, last_update_time, del_flag
+    </sql>
+    <sql id="No_Password_Column_List">
+        <!--@mbg.generated-->
+        id, `user_name`, nick_name, avatar, email, mobile, `status`, dept_id,
         create_by, create_time, last_update_by, last_update_time, del_flag
     </sql>
 </mapper>

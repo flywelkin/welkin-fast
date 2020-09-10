@@ -8,7 +8,7 @@ import java.util.UUID;
  * @CreateTime 2020/08/13 15:44
  * @Version 1.0.0
  */
-public class WelkinIdGenerator {
+public class CustomIdGenerator {
 
     public static String getId(){
         return UUID.randomUUID().toString();

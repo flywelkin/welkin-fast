@@ -22,7 +22,7 @@ public class SysMenu implements Serializable {
     /**
      * 编号
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
@@ -97,6 +97,7 @@ public class SysMenu implements Serializable {
     @TableLogic
     @TableField(value = "del_flag", fill = FieldFill.INSERT)
     private Integer delFlag;
+
 
     private static final long serialVersionUID = 1L;
 

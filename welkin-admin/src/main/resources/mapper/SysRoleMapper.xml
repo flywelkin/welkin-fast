@@ -6,6 +6,7 @@
         <!--@Table sys_role-->
         <id column="id" jdbcType="VARCHAR" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="role_key" jdbcType="VARCHAR" property="roleKey"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -15,11 +16,13 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `name`, remark, create_by, create_time, last_update_by, last_update_time, del_flag
+        id, `name`, role_key, remark, create_by, create_time, last_update_by, last_update_time, del_flag
     </sql>
     <select id="getByUserId" resultMap="BaseResultMap">
-        select sys_role.id,
+        select distinct
+               sys_role.id,
                sys_role.`name`,
+               sys_role.role_key,
                sys_role.remark,
                sys_role.create_by,
                sys_role.create_time,

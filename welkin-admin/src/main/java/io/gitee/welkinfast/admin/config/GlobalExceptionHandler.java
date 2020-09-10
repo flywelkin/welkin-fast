@@ -1,20 +1,20 @@
 package io.gitee.welkinfast.admin.config;
 
 
-import io.gitee.welkinfast.common.error.WelkinErrorType;
-import io.gitee.welkinfast.common.error.WelkinExcption;
-import io.gitee.welkinfast.common.response.WelkinResult;
+import io.gitee.welkinfast.common.error.CustomErrorType;
+import io.gitee.welkinfast.common.error.CustomExcption;
+import io.gitee.welkinfast.common.response.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -26,70 +26,64 @@ import java.util.List;
  * @Version 1.0.0
  */
 @Slf4j
-@ControllerAdvice
-@ResponseBody
+@RestControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class GlobalExceptionHandler {
 
 
     /**
      * 未知异常捕获
      *
-     * @param request
-     * @param exception
-     * @return
+     * @param request HttpServletRequest
+     * @param exception Exception
+     * @return WelkinResult
      */
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public WelkinResult handlerException(HttpServletRequest request, Exception exception) {
+    public CustomResponse handlerException(HttpServletRequest request, Exception exception) {
         log.error(exception.getMessage(), exception);
-        return WelkinResult.CREAT(WelkinErrorType.UNKNOWN_ERROR.getErrorCode(), exception.getMessage());
+        return CustomResponse.FAIL(CustomErrorType.UNKNOWN_ERROR.getErrorCode(), exception.getMessage());
     }
 
     /**
-     * 通用异常捕获
+     * 自定义通用异常捕获
      *
-     * @param request
-     * @param exception
-     * @return
+     * @param request HttpServletRequest
+     * @param exception Exception
+     * @return WelkinResult
      */
-    @ExceptionHandler(WelkinExcption.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(CustomExcption.class)
     @ResponseBody
-    public WelkinResult handlerWelkinExcption(HttpServletRequest request, Exception exception) {
-        if (log.isDebugEnabled()) {
-            log.warn(exception.getMessage(), exception);
-        }
-        WelkinExcption bussinessExcption = (WelkinExcption) exception;
-        return WelkinResult.CREAT(bussinessExcption.getErrorCode(), bussinessExcption.getErrorMsg());
+    public CustomResponse handlerWelkinExcption(HttpServletRequest request, Exception exception) {
+        log.warn(exception.getMessage());
+        CustomExcption bussinessExcption = (CustomExcption) exception;
+        return CustomResponse.FAIL(bussinessExcption.getErrorCode(), bussinessExcption.getErrorMsg());
     }
 
     /**
      * 缺少请求体异常处理器
      *
      * @param e 缺少请求体异常
-     * @return
+     * @return WelkinResult
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseBody
-    public WelkinResult parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
+    public CustomResponse parameterBodyMissingExceptionHandler(HttpMessageNotReadableException e) {
         if (log.isDebugEnabled()) {
             log.error(e.getMessage(), e);
         }
-        return WelkinResult.CREAT(WelkinErrorType.PARAMETER_VALIDATION_ERROR.getErrorCode(), "参数体不能为空");
+        return CustomResponse.FAIL(CustomErrorType.PARAMETER_VALIDATION_ERROR.getErrorCode(), "参数体不能为空");
     }
 
     /**
      * 参数效验异常处理器
      *
      * @param e 参数验证异常
-     * @return
+     * @return WelkinResult
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public WelkinResult parameterExceptionHandler(MethodArgumentNotValidException e) {
+    public CustomResponse parameterExceptionHandler(MethodArgumentNotValidException e) {
         if (log.isDebugEnabled()) {
             log.error(e.getMessage(), e);
         }
@@ -101,10 +95,12 @@ public class GlobalExceptionHandler {
             if (!errors.isEmpty()) {
                 // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
-                return WelkinResult.CREAT(WelkinErrorType.PARAMETER_VALIDATION_ERROR.getErrorCode(), fieldError.getDefaultMessage());
+                return CustomResponse.FAIL(CustomErrorType.PARAMETER_VALIDATION_ERROR.getErrorCode(), fieldError.getDefaultMessage());
             }
         }
-        return WelkinResult.CREAT(WelkinErrorType.PARAMETER_VALIDATION_ERROR.getErrorCode(), WelkinErrorType.PARAMETER_VALIDATION_ERROR.getErrorCode());
+        return CustomResponse.FAIL(CustomErrorType.PARAMETER_VALIDATION_ERROR.getErrorCode(), CustomErrorType.PARAMETER_VALIDATION_ERROR.getErrorMsg());
     }
+
+
 }
 

@@ -1,12 +1,12 @@
 package io.gitee.welkinfast.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import io.gitee.welkinfast.admin.controller.vo.user.SaveUserVo;
-import io.gitee.welkinfast.admin.controller.vo.user.UserVo;
+import io.gitee.welkinfast.admin.controller.vo.user.UserInfo;
+import io.gitee.welkinfast.admin.controller.vo.user.UserQuery;
 import io.gitee.welkinfast.admin.mapper.dao.SysUser;
-import io.gitee.welkinfast.admin.mapper.dao.SysUserRole;
-
-import java.util.List;
+import io.gitee.welkinfast.admin.service.modle.UserModle;
+import io.gitee.welkinfast.common.page.PageRequest;
+import io.gitee.welkinfast.common.page.PageResult;
 
 /**
  * @Description TODO
@@ -16,16 +16,18 @@ import java.util.List;
  */
 public interface SysUserService extends IService<SysUser> {
 
+    SysUser getByUserName(String loginName);
 
-    void updateUser(SysUser user);
+    UserModle getUserById(String id);
+
+    void saveUserVo(UserModle userModle);
+
+    void updateUser(UserModle userModle);
 
     void deleteById(String id);
 
-    void saveUserVo(SaveUserVo user);
+    PageResult<SysUser> getUserList(PageRequest<UserQuery> pageRequest);
 
-    UserVo getUserVoById(String id);
-
-    SysUser getByLoginName(String loginName);
-
+    UserInfo getUserInfoById(String id, Boolean isAdmin);
 }
 

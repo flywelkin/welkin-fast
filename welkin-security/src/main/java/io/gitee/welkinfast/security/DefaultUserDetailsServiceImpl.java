@@ -1,8 +1,9 @@
 package io.gitee.welkinfast.security;
 
-import io.gitee.welkinfast.security.entity.DefaultUserDetails;
-import lombok.extern.slf4j.Slf4j;
+import io.gitee.welkinfast.security.entity.CustomUserDetails;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,28 +17,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Description TODO
+ * @Description 用户信息认证服务
  * @Author yuanjg
  * @CreateTime 2020/08/15 13:48
  * @Version 1.0.0
  */
-
-@Slf4j
 @Component
-public class DefaultUserDetailsService implements UserDetailsService {
+public class DefaultUserDetailsServiceImpl implements UserDetailsService {
+
+    private final Logger logger = LoggerFactory.getLogger(DefaultUserDetailsServiceImpl.class);
 
     @Autowired
     private LoginUserService loginUserService;
 
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
+        if (loginUserService == null) {
+            throw new NoClassDefFoundError(String.format("%s not found instances", LoginUserService.class.getCanonicalName()));
+        }
         if (StringUtils.isBlank(username)) {
-            log.warn("[登录失败:{}] - 用户不存在", username);
+            logger.warn("[登录失败:{}] - 用户不存在", username);
             throw new UsernameNotFoundException("登录失败用户不存在");
         }
-        DefaultUserDetails userDetails = loginUserService.getUserByUsername(username);
+        CustomUserDetails userDetails = loginUserService.getUserByUsername(username);
         if (ObjectUtils.isEmpty(userDetails)) {
-            log.warn("[登录失败:{}] - 用户不存在", username);
+            logger.warn("[登录失败:{}] - 用户不存在", username);
             throw new UsernameNotFoundException("登录失败用户不存在");
         }
         List<String> permissions = userDetails.getPermissions();
@@ -49,7 +54,6 @@ public class DefaultUserDetailsService implements UserDetailsService {
                 }
             };
         }).collect(Collectors.toList());
-        String[] a = new String[1];
         return new User(
                 username,
                 userDetails.getPassword(),

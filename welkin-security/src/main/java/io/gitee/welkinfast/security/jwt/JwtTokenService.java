@@ -1,19 +1,17 @@
 package io.gitee.welkinfast.security.jwt;
 
 import com.alibaba.fastjson.JSON;
-import io.gitee.welkinfast.common.error.WelkinErrorType;
-import io.gitee.welkinfast.common.error.WelkinExcption;
-import io.gitee.welkinfast.security.config.JwtProperties;
+import io.gitee.welkinfast.common.error.CustomErrorType;
+import io.gitee.welkinfast.common.error.CustomExcption;
 import io.gitee.welkinfast.security.entity.CustomPayload;
-import io.gitee.welkinfast.security.entity.DefaultUserDetails;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.slf4j.Slf4j;
+import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.security.properties.CustomSecurityProperties;
+import io.jsonwebtoken.*;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Date;
@@ -25,13 +23,15 @@ import java.util.UUID;
  * @CreateTime 2020/08/16 14:39
  * @Version 1.0.0
  */
-@Slf4j
-@Service
+@Component
 public class JwtTokenService {
 
+    private final Logger logger = LoggerFactory.getLogger(JwtTokenService.class);
+
     private static final String USER_INFO = "user_info";
+
     @Autowired
-    private JwtProperties jwtProperties;
+    private CustomSecurityProperties customSecurityProperties;
 
     /**
      * 公钥解析token
@@ -39,8 +39,10 @@ public class JwtTokenService {
      * @param token 用户请求中的token
      * @return
      */
-    private static Jws<Claims> parserToken(String token, JwtProperties audience) {
-        return Jwts.parser().setSigningKey(audience.getBase64Secret()).parseClaimsJws(token);
+    private Jws<Claims> parserToken(String token) {
+        JwtParser jwtParser = Jwts.parser()
+                .setSigningKey(customSecurityProperties.getJwt().getBase64Secret());
+        return jwtParser.parseClaimsJws(token);
     }
 
 
@@ -49,20 +51,21 @@ public class JwtTokenService {
      *
      * @return String
      */
-    public String createJwt(DefaultUserDetails userInfo) {
+    public String createJwt(CustomUserDetails userInfo) {
         try {
-            String id = userInfo.getId();
-            //缓存jwt
             String jwt = Jwts.builder()
-                    .claim(USER_INFO, JSON.toJSONString(userInfo))
                     .setId(createJti())
-                    .setExpiration(DateTime.now().plusSeconds(jwtProperties.getExpiresSecond()).toDate())
-                    .signWith(SignatureAlgorithm.HS256, jwtProperties.getBase64Secret())
+                    // 自定义属性 放入用户拥有权限
+                    .claim(USER_INFO, JSON.toJSONString(userInfo))
+                    // 失效时间
+                    .setExpiration(DateTime.now().plusSeconds(customSecurityProperties.getJwt().getExpiresSecond()).toDate())
+                    // 签名算法和密钥
+                    .signWith(SignatureAlgorithm.HS256, customSecurityProperties.getJwt().getBase64Secret())
                     .compact();
             return jwt;
         } catch (Exception e) {
-            log.error("签名失败", e);
-            throw new WelkinExcption(WelkinErrorType.PERMISSION_SIGNATURE_ERROR);
+            logger.error("签名失败: {}", e.getMessage());
+            throw new CustomExcption(CustomErrorType.UNAUTHORIZED);
         }
     }
 
@@ -78,7 +81,7 @@ public class JwtTokenService {
      * @return boolean
      */
     public boolean isExpiration(String token) {
-        return parserToken(token, jwtProperties).getBody().getExpiration().before(new Date());
+        return parserToken(token).getBody().getExpiration().before(new Date());
     }
 
 
@@ -89,7 +92,10 @@ public class JwtTokenService {
      * @return 用户信息
      */
     public <T> CustomPayload<T> getInfoFromToken(String token, Class<T> userType) {
-        Jws<Claims> claimsJws = parserToken(token, jwtProperties);
+        Jws<Claims> claimsJws = parserToken(token);
+        if (claimsJws == null) {
+            return null;
+        }
         Claims body = claimsJws.getBody();
         CustomPayload<T> claims = new CustomPayload<>();
         claims.setId(body.getId());
@@ -104,8 +110,8 @@ public class JwtTokenService {
      * @param token 用户请求中的令牌
      * @return 用户信息
      */
-    public static <T> CustomPayload<T> getInfoFromToken(String token, JwtProperties audience) {
-        Jws<Claims> claimsJws = parserToken(token, audience);
+    public <T> CustomPayload<T> getInfoFromToken(String token) {
+        Jws<Claims> claimsJws = parserToken(token);
         Claims body = claimsJws.getBody();
         CustomPayload<T> claims = new CustomPayload<>();
         claims.setId(body.getId());

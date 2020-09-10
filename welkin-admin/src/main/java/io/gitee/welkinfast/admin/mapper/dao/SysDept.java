@@ -22,7 +22,7 @@ public class SysDept implements Serializable {
     /**
      * 编号
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
@@ -35,7 +35,7 @@ public class SysDept implements Serializable {
      * 上级机构ID，一级机构为0
      */
     @TableField(value = "parent_id")
-    private Long parentId;
+    private String parentId;
 
     /**
      * 排序

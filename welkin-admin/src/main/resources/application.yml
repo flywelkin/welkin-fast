@@ -3,11 +3,9 @@ server:
   port: 21000
 
 spring:
-  session:
-    store-type: redis
-    ## Session 存储到 Redis 键的前缀
-    redis:
-      namespace: welkin:spring:session
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
   application:
     name: welkin-fast
   datasource:
@@ -58,6 +56,20 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 
-#logging:
-#  level:
-#    root: debug
+
+logging:
+  level:
+    root: info
+    io.gitee.welkinfast: info
+    io.gitee.welkinfast.admin.mapper: debug
+
+welkin:
+  security:
+    auth-key: user_token
+    admin-role: admin
+    jwt:
+      issuer: welkin
+      base64Secret: 24758638-3739-4030-A497-2137FE072002[www.welkincode.top]
+      expiresSecond: 172800
+    anonymous:
+      - /test

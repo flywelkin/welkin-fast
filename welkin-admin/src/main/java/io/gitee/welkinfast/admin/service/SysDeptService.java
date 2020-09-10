@@ -1,7 +1,10 @@
 package io.gitee.welkinfast.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.gitee.welkinfast.admin.controller.vo.DeptVo;
 import io.gitee.welkinfast.admin.mapper.dao.SysDept;
+import io.gitee.welkinfast.common.page.PageRequest;
+import io.gitee.welkinfast.common.page.PageResult;
 
 /**
  * @Description TODO
@@ -20,5 +23,6 @@ public interface SysDeptService extends IService<SysDept> {
 
     void deleteById(String id);
 
+    PageResult<SysDept> getUserList(PageRequest<DeptVo> pageRequest);
 }
 
