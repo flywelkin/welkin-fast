@@ -43,7 +43,7 @@ public class SysUserController {
         UserModle userModle = sysUserService.getUserById(id);
         UserVo userVo = new UserVo();
         BeanUtils.copyProperties(userModle,userVo);
-        return CustomResponse.OK(userModle);
+        return CustomResponse.OK(userVo);
     }
 
     @ApiOperation("保存用户")

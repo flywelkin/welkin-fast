@@ -1,6 +1,5 @@
 package io.gitee.welkinfast.admin.config;
 
-import io.gitee.welkinfast.common.response.CustomResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -39,17 +38,13 @@ public class SwaggerConfig {
         List<Parameter> pars = new ArrayList();
         //根据每个方法名也知道当前方法在设置什么参数
         pars.add(ticketPar.build());
-        return new Docket(DocumentationType.SPRING_WEB)
+        return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("io.gitee.welkinfast.admin.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                .globalOperationParameters(pars)
-                //.forCodeGeneration(true)
-                //遇到对应泛型类型的外围类，直接解析成泛型类型，WelkinResult<T>，应该直接输出成类型T
-                .genericModelSubstitutes(CustomResponse.class);
-
+                .globalOperationParameters(pars);
     }
 
     private ApiInfo apiInfo() {

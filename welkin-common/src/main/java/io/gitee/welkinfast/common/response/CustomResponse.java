@@ -11,20 +11,20 @@ public class CustomResponse<T> {
     public static final int SUCCESS = 200;
     public static final int FAIL = 500;
 
-    private Integer code = SUCCESS;
+    private Integer code = CustomResponse.SUCCESS;
     private String message;
     private T data;
 
-    public static CustomResponse OK(Object data) {
-        return new CustomResponse(CustomResponse.SUCCESS, null, data);
+    public static <T> CustomResponse<T> OK(T data) {
+        return new CustomResponse<T>(CustomResponse.SUCCESS, null, data);
     }
 
-    public static CustomResponse FAIL(String message) {
-        return new CustomResponse(CustomResponse.FAIL, message, null);
+    public static <T> CustomResponse<T> FAIL(String message) {
+        return new CustomResponse<T>(CustomResponse.FAIL, message, null);
     }
 
-    public static CustomResponse FAIL(Integer code, String message) {
-        return new CustomResponse(code, message, null);
+    public static <T> CustomResponse<T> FAIL(Integer code, String message) {
+        return new CustomResponse<T>(code, message, null);
     }
 
     public CustomResponse(Integer code, String message, T data) {

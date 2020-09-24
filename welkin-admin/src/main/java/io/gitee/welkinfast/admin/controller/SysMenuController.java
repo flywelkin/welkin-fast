@@ -64,7 +64,7 @@ public class SysMenuController {
     @ApiOperation("查询当前用户菜单树")
     @PreAuthorize("hasAuthority('sys:menu:list')")
     @GetMapping("/menu/tree")
-    public CustomResponse<List<SysMenu>> getMenuTree() {
+    public CustomResponse<List<MenuVo>> getMenuTree() {
         CustomUserDetails currentUserInfo = CustomUserUtils.getCurrentUserInfo();
         List<MenuVo> result = sysMenuService.getMenuTree(currentUserInfo.getId(),currentUserInfo.isAdmin());
         return CustomResponse.OK(result);
