@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.gitee.welkinfast.service.mapper.ChatFriendMapper">
+  <resultMap id="BaseResultMap" type="io.gitee.welkinfast.service.mapper.dao.ChatFriend">
+    <!--@mbg.generated-->
+    <!--@Table chat_friend-->
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="friend_id" jdbcType="VARCHAR" property="friendId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    user_id, friend_id
+  </sql>
+</mapper>
