@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @Description mybatis plus 配置类
+ *  mybatis plus 配置类
  * @Author yuanjg
  * @CreateTime 2020/8/12 9:43
  * @Version 1.0.0
  */
 @Configuration
-@MapperScan("io.gitee.welkinfast.admin.**.mapper")
+@MapperScan("io.gitee.welkinfast.**.mapper")
 public class MybatisPlusConfig {
     /**
      * 分页插件

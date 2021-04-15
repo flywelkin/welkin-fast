@@ -1,27 +1,29 @@
 package io.gitee.welkinfast.admin.controller;
 
-import io.gitee.welkinfast.admin.controller.vo.MenuVo;
-import io.gitee.welkinfast.admin.mapper.dao.SysMenu;
-import io.gitee.welkinfast.admin.service.SysMenuService;
+import io.gitee.welkinfast.admin.vo.MenuVo;
 import io.gitee.welkinfast.common.response.CustomResponse;
 import io.gitee.welkinfast.security.CustomUserUtils;
-import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.common.jwt.entity.CustomUserDetails;
+import io.gitee.welkinfast.service.mapper.dao.SysMenu;
+import io.gitee.welkinfast.service.service.SysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * @Description 菜单管理控制器
+ *  菜单管理控制器
  * @Author yuanjg
  * @CreateTime 2020/08/14 19:14
  * @Version 1.0.0
  */
-@Api(tags  = "菜单管理")
+@Api(tags = "菜单管理")
 @RestController
 public class SysMenuController {
 
@@ -66,8 +68,13 @@ public class SysMenuController {
     @GetMapping("/menu/tree")
     public CustomResponse<List<MenuVo>> getMenuTree() {
         CustomUserDetails currentUserInfo = CustomUserUtils.getCurrentUserInfo();
-        List<MenuVo> result = sysMenuService.getMenuTree(currentUserInfo.getId(),currentUserInfo.isAdmin());
-        return CustomResponse.OK(result);
+        List<SysMenu> result = sysMenuService.getMenuTree(currentUserInfo.getId(), currentUserInfo.isAdmin());
+        List<MenuVo> collect = result.stream().map(item -> {
+            MenuVo menuVo = new MenuVo();
+            BeanUtils.copyProperties(item, menuVo);
+            return menuVo;
+        }).collect(Collectors.toList());
+        return CustomResponse.OK(collect);
     }
 
 }

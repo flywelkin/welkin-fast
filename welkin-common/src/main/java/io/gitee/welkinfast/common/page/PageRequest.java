@@ -2,7 +2,7 @@ package io.gitee.welkinfast.common.page;
 
 
 /**
- * @Description 分页参数封装
+ *  分页参数封装
  * @Author yuanjg
  * @CreateTime 2020/8/20 16:08
  * @Version 1.0.0

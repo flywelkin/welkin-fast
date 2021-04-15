@@ -1,14 +1,14 @@
 package io.gitee.welkinfast.admin.controller;
 
-import io.gitee.welkinfast.admin.controller.vo.RoleVo;
-import io.gitee.welkinfast.admin.mapper.dao.SysRole;
-import io.gitee.welkinfast.admin.service.SysRoleService;
-import io.gitee.welkinfast.admin.service.modle.RoleModel;
+import io.gitee.welkinfast.admin.vo.RoleVo;
 import io.gitee.welkinfast.common.page.PageRequest;
 import io.gitee.welkinfast.common.page.PageResult;
 import io.gitee.welkinfast.common.response.CustomResponse;
 import io.gitee.welkinfast.security.CustomUserUtils;
-import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.common.jwt.entity.CustomUserDetails;
+import io.gitee.welkinfast.service.mapper.dao.SysRole;
+import io.gitee.welkinfast.service.service.SysRoleService;
+import io.gitee.welkinfast.service.service.modle.RoleModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @Description 角色管理控制器
+ *  角色管理控制器
  * @Author yuanjg
  * @CreateTime 2020/08/14 19:14
  * @Version 1.0.0
@@ -73,7 +73,12 @@ public class SysRoleController {
     @PreAuthorize("hasAuthority('sys:role:list')")
     @PostMapping("/role/list")
     public CustomResponse<PageResult<SysRole>> getUserList(@RequestBody PageRequest<RoleVo> pageRequest) {
-        PageResult<SysRole> result = sysRoleService.getUserList(pageRequest);
+        RoleVo params = pageRequest.getParams();
+        SysRole sysRole = new SysRole();
+        BeanUtils.copyProperties(params, sysRole);
+        int current = pageRequest.getCurrent();
+        int size = pageRequest.getSize();
+        PageResult<SysRole> result = sysRoleService.getUserList(sysRole, current, size);
         return CustomResponse.OK(result);
     }
 
@@ -82,7 +87,7 @@ public class SysRoleController {
     @GetMapping("current/role/list")
     public CustomResponse<List<SysRole>> getUserList() {
         CustomUserDetails currentUserInfo = CustomUserUtils.getCurrentUserInfo();
-        List<SysRole> sysRoles = sysRoleService.getByUserIdAndIsAdmin(currentUserInfo.getId(),currentUserInfo.isAdmin());
+        List<SysRole> sysRoles = sysRoleService.getByUserIdAndIsAdmin(currentUserInfo.getId(), currentUserInfo.isAdmin());
         return CustomResponse.OK(sysRoles);
     }
 

@@ -1,0 +1,70 @@
+# 应用服务 WEB 访问端口
+server:
+  port: 8080
+spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  application:
+    name: welkin-fast
+  datasource:
+    url: jdbc:mysql://111.229.13.60:3306/welkin-fast?characterEncoding=utf8&useSSL=true&nullCatalogMeansCurrent=true&serverTimezone=GMT%2B8
+    username: root
+    password: welkin@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: WelkinFastHikariPool
+      ## 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 30000
+      ## 最小空闲连接数量
+      minimum-idle: 5
+      ## 连接池最大连接数，默认是10
+      maximum-pool-size: 30
+      ## 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 600000
+      ## 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      leak-detection-threshold: 50000
+      connection-test-query: SELECT 1
+  redis:
+    host: 111.229.13.60
+    port: 6379
+    password: welkin@123
+    timeout: 3600
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 5
+        max-wait: 5000
+        shutdown-timeout: 100
+
+# 设置mapper.xml文件位置
+mybatis-plus:
+  mapper-locations:  classpath*:/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: io.gitee.welkinfast.admin.model
+  global-config:
+    db-config:
+      logic-delete-field: del_flag  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+
+logging:
+  level:
+    root: info
+    io.gitee.welkinfast: info
+    io.gitee.welkinfast.admin.mapper: debug
+
+welkin:
+  security:
+    auth-key: user_token
+    admin-role: admin
+    jwt:
+      issuer: welkin
+      base64Secret: 24758638-3739-4030-A497-2137FE072002[www.welkincode.top]
+      expiresSecond: 172800
+    anonymous:
+      - /test

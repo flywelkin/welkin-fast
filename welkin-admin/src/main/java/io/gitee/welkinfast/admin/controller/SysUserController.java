@@ -1,26 +1,27 @@
 package io.gitee.welkinfast.admin.controller;
 
-import io.gitee.welkinfast.admin.controller.vo.UserVo;
-import io.gitee.welkinfast.admin.controller.vo.user.SaveUserVo;
-import io.gitee.welkinfast.admin.controller.vo.user.UserQuery;
-import io.gitee.welkinfast.admin.mapper.dao.SysUser;
-import io.gitee.welkinfast.admin.service.SysUserService;
-import io.gitee.welkinfast.admin.service.modle.UserModle;
+import io.gitee.welkinfast.admin.vo.UserVo;
+import io.gitee.welkinfast.admin.vo.user.SaveUserVo;
 import io.gitee.welkinfast.common.error.CustomErrorType;
 import io.gitee.welkinfast.common.error.CustomExcption;
 import io.gitee.welkinfast.common.page.PageRequest;
 import io.gitee.welkinfast.common.page.PageResult;
 import io.gitee.welkinfast.common.response.CustomResponse;
+import io.gitee.welkinfast.service.mapper.dao.SysUser;
+import io.gitee.welkinfast.service.service.SysUserService;
+import io.gitee.welkinfast.service.service.modle.UserModle;
+import io.gitee.welkinfast.service.vo.user.UserQuery;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @Description 用户管理控制器
+ *  用户管理控制器
  * @Author yuanjg
  * @CreateTime 2020/08/13 13:07
  * @Version 1.0.0
@@ -32,6 +33,8 @@ public class SysUserController {
 
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @ApiOperation(value = "根据ID获取用户信息", notes = "根据ID获取用户信息")
     @PreAuthorize("hasAuthority('sys:user:view')")
@@ -52,6 +55,7 @@ public class SysUserController {
     public CustomResponse<String> save(@RequestBody SaveUserVo saveUserVo) {
         UserModle userModle = new UserModle();
         BeanUtils.copyProperties(saveUserVo,userModle);
+        userModle.setPassword(bCryptPasswordEncoder.encode(userModle.getPassword()));
         sysUserService.saveUserVo(userModle);
         return CustomResponse.OK("保存成功");
     }

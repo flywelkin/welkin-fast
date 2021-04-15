@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * @Description 全局异常处理
+ *  全局异常处理
  * @Author yuanjg
  * @CreateTime 2020/8/15 19:57
  * @Version 1.0.0

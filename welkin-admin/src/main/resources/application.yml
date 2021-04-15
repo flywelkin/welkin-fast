@@ -14,10 +14,10 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    initialization-mode: always # 总时初始化数据库
-    continue-on-error: true #出现创建异常忽略，继续执行，防止表存在再创建
-    schema: classpath:welkin-fast.sql #创建表
-    data: classpath:welkin-fast-data.sql #初始化数据
+#    initialization-mode: always # 总时初始化数据库
+#    continue-on-error: true #出现创建异常忽略，继续执行，防止表存在再创建
+#    schema: classpath:welkin-fast.sql #创建表
+#    data: classpath:welkin-fast-data.sql #初始化数据
     hikari:
       pool-name: WelkinFastHikariPool
       ## 空闲连接存活最大时间，默认600000（10分钟）
@@ -66,10 +66,10 @@ logging:
 welkin:
   security:
     auth-key: user_token
-    admin-role: admin
-    jwt:
-      issuer: welkin
-      base64Secret: 24758638-3739-4030-A497-2137FE072002[www.welkincode.top]
-      expiresSecond: 172800
     anonymous:
       - /test
+  jwt:
+    issuer: welkin
+    base64Secret: 24758638-3739-4030-A497-2137FE072002[www.welkincode.top]
+    expiresSecond: 172800
+

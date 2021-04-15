@@ -1,6 +1,7 @@
 package io.gitee.welkinfast.admin.service;
 
-import io.gitee.welkinfast.admin.mapper.dao.SysUser;
+import io.gitee.welkinfast.service.mapper.dao.SysUser;
+import io.gitee.welkinfast.service.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * @Description TODO
+ *
  * @Author yuanjg
  * @CreateTime 2020/08/21 15:24
  * @Version 1.0.0

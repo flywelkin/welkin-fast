@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * @Description 认证白名单处理器
+ *  认证白名单处理器
  * @Author yuanjg
  * @CreateTime 2020/08/20 09:09
  * @Version 1.0.0

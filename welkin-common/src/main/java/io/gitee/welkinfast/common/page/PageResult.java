@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @Description TODO
+ *
  * @Author yuanjg
  * @CreateTime 2020/08/22 13:20
  * @Version 1.0.0
@@ -60,4 +60,5 @@ public class PageResult<T> {
     public void setCurrent(long current) {
         this.current = current;
     }
+
 }

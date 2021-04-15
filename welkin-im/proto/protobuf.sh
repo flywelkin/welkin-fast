@@ -1,0 +1,1 @@
+protoc.exe  --java_out=..//src/main/java/ ./ProtoMsg.proto

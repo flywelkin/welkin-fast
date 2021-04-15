@@ -21,7 +21,32 @@
         <module>welkin-admin</module>
         <module>welkin-common</module>
         <module>welkin-security</module>
+        <module>welkin-service</module>
+        <module>welkin-quartz</module>
+        <module>welkin-im-service</module>
+        <module>welkin-im</module>
+        <module>welkin-im-web</module>
     </modules>
+
+    <dependencies>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- commons lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- commons pool2 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -98,7 +123,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.54</version>
+                <version>1.2.76</version>
             </dependency>
 
             <!-- welkin-common -->
@@ -112,6 +137,26 @@
             <dependency>
                 <groupId>io.gitee.welkinfast</groupId>
                 <artifactId>welkin-security</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.gitee.welkinfast</groupId>
+                <artifactId>welkin-service</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
+            <!-- welkin-quartz -->
+            <dependency>
+                <groupId>io.gitee.welkinfast</groupId>
+                <artifactId>welkin-quartz</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
+            <!-- welkin-im -->
+            <dependency>
+                <groupId>io.gitee.welkinfast</groupId>
+                <artifactId>welkin-websocket</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>

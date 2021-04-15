@@ -2,8 +2,8 @@ package io.gitee.welkinfast.security.handler;
 
 import io.gitee.welkinfast.common.response.CustomResponse;
 import io.gitee.welkinfast.security.LoginUserService;
-import io.gitee.welkinfast.security.entity.CustomUserDetails;
-import io.gitee.welkinfast.security.jwt.JwtTokenService;
+import io.gitee.welkinfast.common.jwt.entity.CustomUserDetails;
+import io.gitee.welkinfast.common.jwt.JwtTokenService;
 import io.gitee.welkinfast.security.util.ServletUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Description 登录成功的处理
+ *  登录成功的处理
  * @Author yuanjg
  * @CreateTime 2020/08/15 14:03
  * @Version 1.0.0

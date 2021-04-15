@@ -1,5 +1,6 @@
 package io.gitee.welkinfast.admin.config;
 
+import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -19,7 +20,7 @@ import java.util.List;
 
 
 /**
- * @Description Swagger配置
+ *  Swagger配置
  * @Author yuanjg
  * @CreateTime 2020/8/13 12:54
  * @Version 1.0.0
@@ -41,7 +42,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("io.gitee.welkinfast.admin.controller"))
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars);

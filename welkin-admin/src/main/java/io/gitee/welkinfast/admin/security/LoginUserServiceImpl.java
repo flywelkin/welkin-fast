@@ -1,13 +1,14 @@
 package io.gitee.welkinfast.admin.security;
 
-import io.gitee.welkinfast.admin.mapper.dao.SysMenu;
-import io.gitee.welkinfast.admin.mapper.dao.SysRole;
-import io.gitee.welkinfast.admin.mapper.dao.SysUser;
-import io.gitee.welkinfast.admin.service.SysMenuService;
-import io.gitee.welkinfast.admin.service.SysRoleService;
-import io.gitee.welkinfast.admin.service.SysUserService;
+
 import io.gitee.welkinfast.security.LoginUserService;
-import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.common.jwt.entity.CustomUserDetails;
+import io.gitee.welkinfast.service.mapper.dao.SysMenu;
+import io.gitee.welkinfast.service.mapper.dao.SysRole;
+import io.gitee.welkinfast.service.mapper.dao.SysUser;
+import io.gitee.welkinfast.service.service.SysMenuService;
+import io.gitee.welkinfast.service.service.SysRoleService;
+import io.gitee.welkinfast.service.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Description TODO
+ *
  * @Author yuanjg
  * @CreateTime 2020/08/16 13:15
  * @Version 1.0.0

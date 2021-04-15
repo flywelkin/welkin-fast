@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 /**
- * @Description 自定义全局返回格式
+ *  自定义全局返回格式
  * @Author yuanjg
  * @CreateTime 2020/09/08 22:02
  * @Version 1.0.0

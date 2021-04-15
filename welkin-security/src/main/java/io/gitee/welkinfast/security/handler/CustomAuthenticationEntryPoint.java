@@ -15,7 +15,7 @@ import java.io.IOException;
 
 
 /**
- * @Description 处理匿名用户访问无权限资源时的异常
+ *  处理匿名用户访问无权限资源时的异常
  * 401 需要登录或者说没有通过认证
  * 403 没有权限，服务器受到请求但拒绝提供服务
  * @Author yuanjg

@@ -197,3 +197,22 @@ CREATE TABLE `sys_login_log`
     `last_update_time` datetime(0)  NULL DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) COMMENT = '系统登录日志';
+
+
+-- ----------------------------
+-- Table structure for sys_task
+-- ----------------------------
+CREATE TABLE `sys_task` (
+    `id`                varchar(64) COLLATE utf8mb4_bin NOT NULL,
+    `job_name`          varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务名',
+    `description`       varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务描述',
+    `cron_expression`   varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'cron表达式',
+    `bean_class`        varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务执行时调用哪个类的方法 包名+类名',
+    `job_status`        varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务状态',
+    `job_group`         varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '任务分组',
+    `create_by`         varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '创建者',
+    `create_time`       datetime DEFAULT NULL COMMENT '创建时间',
+    `last_update_by`    varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '更新者',
+    `last_update_time`  datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) COMMENT = '定时任务列表';

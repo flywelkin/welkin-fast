@@ -24,7 +24,7 @@ import java.util.Collections;
 
 /**
  *
- * @Description Spring Security 配置类
+ *  Spring Security 配置类
  * @Author yuanjg
  * @CreateTime 2020/08/15 14:15
  * @Version 1.0.0

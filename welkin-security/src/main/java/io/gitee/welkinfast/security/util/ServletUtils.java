@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Description servlet 工具类
+ *  servlet 工具类
  * @Author yuanjg
  * @CreateTime 2020/08/15 13:46
  * @Version 1.0.0

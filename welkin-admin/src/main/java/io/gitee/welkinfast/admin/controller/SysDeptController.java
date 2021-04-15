@@ -1,11 +1,11 @@
 package io.gitee.welkinfast.admin.controller;
 
-import io.gitee.welkinfast.admin.controller.vo.DeptVo;
-import io.gitee.welkinfast.admin.mapper.dao.SysDept;
-import io.gitee.welkinfast.admin.service.SysDeptService;
 import io.gitee.welkinfast.common.page.PageRequest;
 import io.gitee.welkinfast.common.page.PageResult;
 import io.gitee.welkinfast.common.response.CustomResponse;
+import io.gitee.welkinfast.service.mapper.dao.SysDept;
+import io.gitee.welkinfast.service.service.SysDeptService;
+import io.gitee.welkinfast.admin.vo.DeptVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -15,12 +15,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @Description 部门管理控制器
+ *  部门管理控制器
  * @Author yuanjg
  * @CreateTime 2020/08/14 19:14
  * @Version 1.0.0
  */
-@Api(tags  = "部门管理")
+@Api(tags = "部门管理")
 @RestController
 public class SysDeptController {
 
@@ -66,7 +66,12 @@ public class SysDeptController {
     @PreAuthorize("hasAuthority('sys:dept:list')")
     @PostMapping("/dept/list")
     public CustomResponse<PageResult<SysDept>> getUserList(@RequestBody PageRequest<DeptVo> pageRequest) {
-        PageResult<SysDept> result = sysDeptService.getUserList(pageRequest);
+        DeptVo params = pageRequest.getParams();
+        SysDept sysDept = new SysDept();
+        BeanUtils.copyProperties(params, sysDept);
+        int size = pageRequest.getSize();
+        int current = pageRequest.getCurrent();
+        PageResult<SysDept> result = sysDeptService.getUserList(sysDept, current, size);
         return CustomResponse.OK(result);
     }
 

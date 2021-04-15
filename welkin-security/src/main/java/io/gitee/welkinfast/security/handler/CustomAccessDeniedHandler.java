@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Description 注解的异常处理： @PreAuthorize注解中hasAuthorize,抛出AccessDeniedException异常，
+ *  注解的异常处理： @PreAuthorize注解中hasAuthorize,抛出AccessDeniedException异常，
  * 不会被accessDeniedHandler捕获;hasRole,如果出现异常,会调用设置的accessDeniedHandler方法
  *
  * @Author yuanjg

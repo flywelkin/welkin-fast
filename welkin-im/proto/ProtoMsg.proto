@@ -1,0 +1,86 @@
+syntax = "proto2";
+package proto;
+option java_package="io.gitee.welkinfast.im.proto";
+option java_outer_classname = "ImEntity";
+
+enum HeadType{
+    LOGIN_REQUEST = 1;//登陆请求
+    LOGIN_RESPONSE = 2;//登录响应
+    LOGOUT_REQUEST = 3;//退出请求
+    LOGOUT_RESPONSE = 4;//退出响应
+    KEEPALIVE_REQUEST = 5;//心跳请求PING;
+    KEEPALIVE_RESPONSE = 6;//心跳响应PANG;
+    MESSAGE_REQUEST = 7;//消息请求;
+    MESSAGE_RESPONSE = 8;//消息相应;
+    MESSAGE_NOTIFICATION = 9;//通知消息
+}
+
+/**/
+enum NotifyType{
+    ONLINE = 1;//上线
+    OFFLINE = 2;//下线
+}
+
+enum MessageType{
+    TXT = 1;//纯文本
+    OTHER = 2;//其他
+}
+
+/*心跳*/
+message MessageHeartBeat {
+    required string   content = 1;
+}
+
+/*通知消息*/
+message MessageNotification{
+    required uint32 msg_type = 1;	//通知类型 1 上线 2 下线 3 远程连接
+    required string sender = 2;
+    required string timestamp = 3;
+    required string json = 4;
+}
+
+/*登录信息*/
+message LoginRequest{
+    required string token = 3;       // 用户token
+}
+
+/*登录响应*/
+message LoginResponse{
+    required bool  success = 1; //true 表示成功，false表示失败
+    optional uint32 code = 2;	//错误码
+    optional string info = 3;	//错误描述
+    optional uint32 expose = 4;	//错误描述是否提示给用户:1 提示;0 不提示
+}
+
+/*聊天消息*/
+message MessageRequest{
+    required string from = 1;		//发送方sessionId
+    required string to = 2;		//接收方sessionId
+    required uint64 time = 3;		//时间戳(单位:毫秒)
+    required MessageType msg_type = 4;	//消息类型
+    optional string content = 5;	//消息内容
+    optional string json = 6;		//附加的json串
+}
+
+/*聊天响应*/
+message MessageResponse{
+    required bool result = 1; //true表示发送成功，false表示发送失败
+    optional uint32 code = 2;	//错误码
+    optional string info = 3;	//错误描述
+    optional uint32 expose = 4; //错误描述是否提示给用户:1 提示;0 不提示
+}
+
+
+
+/*顶层消息*/
+message Message{
+    required HeadType type = 1; //消息类型
+    required string   id = 2;//消息系列号
+    required string   session_id = 3;
+    optional LoginRequest loginRequest = 4;
+    optional LoginResponse loginResponse = 5;
+    optional MessageRequest messageRequest = 6;
+    optional MessageResponse messageResponse = 7;
+    optional MessageNotification notification = 8;
+    optional MessageHeartBeat messageHeartBeat = 9;
+}

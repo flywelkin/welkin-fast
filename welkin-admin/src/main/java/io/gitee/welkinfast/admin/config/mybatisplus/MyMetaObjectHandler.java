@@ -1,7 +1,7 @@
 package io.gitee.welkinfast.admin.config.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.common.jwt.entity.CustomUserDetails;
 import io.gitee.welkinfast.security.CustomUserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -13,7 +13,7 @@ import java.util.Date;
  * insert语句添加 创建人，创建时间，更新人更，更新新时间 字段
  * update语句添加 更新人更，更新新时间 字段
  *
- * @Description mybatis plus 字段自动填充配置，
+ *  mybatis plus 字段自动填充配置，
  * @Author yuanjg
  * @CreateTime 2020/08/16 16:45
  * @Version 1.0.0

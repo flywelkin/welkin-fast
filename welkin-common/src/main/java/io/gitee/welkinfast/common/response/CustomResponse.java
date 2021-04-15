@@ -1,7 +1,7 @@
 package io.gitee.welkinfast.common.response;
 
 /**
- * @Description JSON格式统一返回类
+ *  JSON格式统一返回类
  * @Author yuanjg
  * @CreateTime 2020/8/22 12:30
  * @Version 1.0.0

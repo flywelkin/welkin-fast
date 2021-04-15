@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @Description 注解的异常处理： @PreAuthorize注解中hasAuthorize判断权限,
+ *  注解的异常处理： @PreAuthorize注解中hasAuthorize判断权限,
  * 会抛出AccessDeniedException异常.不会被accessDeniedHandler捕获，所以使用
  * 全局异常捕获处理
  * @Author yuanjg

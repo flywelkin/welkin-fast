@@ -1,6 +1,6 @@
 package io.gitee.welkinfast.security;
 
-import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.common.jwt.entity.CustomUserDetails;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Description 用户信息认证服务
+ *  用户信息认证服务
  * @Author yuanjg
  * @CreateTime 2020/08/15 13:48
  * @Version 1.0.0

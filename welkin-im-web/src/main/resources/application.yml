@@ -1,0 +1,13 @@
+server:
+  port: 8082
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://192.168.32.128:27017/welkin
+
+logging:
+  level:
+    root: error
+    io.gitee.welkinfast.im: debug
+

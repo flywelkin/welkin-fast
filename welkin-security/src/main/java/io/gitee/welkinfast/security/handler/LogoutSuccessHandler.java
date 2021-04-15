@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Description 退出登录的回调
+ *  退出登录的回调
  * @Author yuanjg
  * @CreateTime 2020/08/15 14:10
  * @Version 1.0.0

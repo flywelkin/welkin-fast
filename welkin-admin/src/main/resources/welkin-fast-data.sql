@@ -18,7 +18,7 @@ INSERT INTO `sys_user_role` VALUES ('9a72f1e0-0e7d-45b9-a882-e708bad555ac', '594
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('86d3d552-ed30-4f47-b82f-6e1d0a0046ed', '系统管理', '0', '/sys', 'sys', 0, 'el-icon-setting', 0, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:05:51', 0);
 
-INSERT INTO `sys_menu` VALUES ('64e0baab-6a17-4b2d-97ca-1953a59a1aab', '用户管理', '86d3d552-ed30-4f47-b82f-6e1d0a0046ed', '/sys/user', 'sys:user:list', 1, 'el-icon-service', 0, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:10:09', 0);
+INSERT INTO `sys_menu` VALUES ('64e0baab-6a17-4b2d-97ca-1953a59a1aab', '用户管理', '86d3d552-ed30-4f47-b82f-6e1d0a0046ed', '/sys/user', 'sys:user:list', 1, 'el-icon-server', 0, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:10:09', 0);
 INSERT INTO `sys_menu` VALUES ('c2c385a4-a5c7-44dc-8ad9-befc4cd498d4', '查看', '64e0baab-6a17-4b2d-97ca-1953a59a1aab', NULL, 'sys:user:view', 2, NULL, 0, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:05:51', 0);
 INSERT INTO `sys_menu` VALUES ('e1e78a35-4e0a-4b6f-aa71-85aba8d40482', '新增', '64e0baab-6a17-4b2d-97ca-1953a59a1aab', NULL, 'sys:user:add', 2, NULL, 1, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:11:22', 0);
 INSERT INTO `sys_menu` VALUES ('2c92a85f-d049-4b60-a352-8b9e20651722', '修改', '64e0baab-6a17-4b2d-97ca-1953a59a1aab', NULL, 'sys:user:update', 2, NULL, 2, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:11:26', 0);

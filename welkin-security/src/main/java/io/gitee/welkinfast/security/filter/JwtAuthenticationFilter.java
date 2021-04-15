@@ -1,9 +1,9 @@
 package io.gitee.welkinfast.security.filter;
 
-import io.gitee.welkinfast.security.entity.CustomPayload;
-import io.gitee.welkinfast.security.entity.CustomUserDetails;
+import io.gitee.welkinfast.common.jwt.entity.CustomPayload;
+import io.gitee.welkinfast.common.jwt.entity.CustomUserDetails;
 import io.gitee.welkinfast.security.handler.CustomAuthenticationEntryPoint;
-import io.gitee.welkinfast.security.jwt.JwtTokenService;
+import io.gitee.welkinfast.common.jwt.JwtTokenService;
 import io.gitee.welkinfast.security.properties.CustomSecurityProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Description jwt 认证过滤器
+ *  jwt 认证过滤器
  * @Author yuanjg
  * @CreateTime 2020/08/16 11:23
  * @Version 1.0.0
@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomSecurityProperties customSecurityProperties;
     @Autowired
-    private JwtTokenService JwtTokenService;
+    private JwtTokenService jwtTokenService;
     @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
@@ -73,14 +73,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         //通过token解析出载荷信息
         try {
-            CustomPayload<CustomUserDetails> payload = JwtTokenService.getInfoFromToken(bearerToken, CustomUserDetails.class);
+            CustomPayload<CustomUserDetails> payload = jwtTokenService.getInfoFromToken(bearerToken, CustomUserDetails.class);
             CustomUserDetails user = payload.getUserInfo();
             //判断是否已经过期
-            boolean expiration = JwtTokenService.isExpiration(bearerToken);
+            boolean expiration = jwtTokenService.isExpiration(bearerToken);
             if (user == null && expiration) {
                 throw new BadCredentialsException("token is expiration");
             }
-            String adminRole = customSecurityProperties.getAdminRole();
             List<String> permissions = user.getPermissions();
             List<GrantedAuthority> grantedAuthoritys = permissions.stream().map(item -> {
                 return new GrantedAuthority() {
