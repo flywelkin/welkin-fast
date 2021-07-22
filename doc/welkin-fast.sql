@@ -224,3 +224,13 @@ CREATE TABLE `chat_friend` (
    `user_id` varchar(100) COLLATE utf8mb4_bin NOT NULL COMMENT '用户ID',
    `friend_id` varchar(100) COLLATE utf8mb4_bin NOT NULL COMMENT '好友ID'
 ) COMMENT = '好友关系表';
+
+-- ----------------------------
+-- Table structure for mini_gif_count
+-- ----------------------------
+CREATE TABLE `mini_gif_count`
+(
+    `open_id` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+    `count`   int(11) DEFAULT NULL,
+    PRIMARY KEY (`open_id`)
+);

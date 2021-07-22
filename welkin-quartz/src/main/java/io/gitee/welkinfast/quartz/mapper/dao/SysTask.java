@@ -4,6 +4,7 @@ package io.gitee.welkinfast.quartz.mapper.dao;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Date;
 

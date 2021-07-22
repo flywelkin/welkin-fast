@@ -17,7 +17,12 @@ public enum CustomErrorType implements CustomError {
     //20000开头为用户信息相关错误定义
     USER_EXIST(20001, "用户已存在"),
     USER_NOT_EXIST(20002, "用户不存在"),
-    LOGIN_FAIL(20005, "用户名或密码不正确");
+    LOGIN_FAIL(20005, "用户名或密码不正确"),
+
+    MINI_ERROR(30000, "小程序接口请求异常"),
+    FILE_NOT_EXIST(30001, "文件不存在"),
+    CONVERSION_ERROR(30002, "转换异常"),
+    TASK_ERROR(40000, "定时任务异常");
 
     private int errorCode;
     private String errorMsg;

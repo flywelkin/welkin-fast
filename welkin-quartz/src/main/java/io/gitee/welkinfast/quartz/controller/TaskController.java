@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *  定时任务管理控制器
+ * 定时任务管理控制器
+ *
  * @Author yuanjg
  * @CreateTime 2020/10/10 09:40
  * @Version 1.0.0
@@ -28,7 +29,7 @@ public class TaskController {
     @ApiOperation("分页查询任务列表")
     @PostMapping("/tasks")
     public CustomResponse<PageResult<SysTask>> getPage(@RequestBody PageRequest<SysTask> pageRequest) {
-        PageResult<SysTask> result = sysTaskService.getPage(pageRequest.getParams(),pageRequest.getCurrent(),pageRequest.getSize());
+        PageResult<SysTask> result = sysTaskService.getPage(pageRequest.getParams(), pageRequest.getCurrent(), pageRequest.getSize());
         return CustomResponse.OK(result);
     }
 
@@ -46,6 +47,13 @@ public class TaskController {
         return CustomResponse.OK(true);
     }
 
+    @ApiOperation("更新定时任务")
+    @PutMapping("/task")
+    public CustomResponse<Boolean> updateTask(@RequestBody SysTask sysTask) {
+        sysTaskService.updateById(sysTask);
+        return CustomResponse.OK(true);
+    }
+
     @ApiOperation("更改定时任务状态")
     @PutMapping("/task/status")
     public CustomResponse<Boolean> updateTaskStatus(@RequestBody SysTask sysTask) throws SchedulerException {
@@ -60,4 +68,10 @@ public class TaskController {
         return CustomResponse.OK(true);
     }
 
+    @ApiOperation("根据ID立即执行任务")
+    @PostMapping("/task/run")
+    public CustomResponse<String> runJobNow(@RequestBody SysTask sysTask) {
+        sysTaskService.runJobNow(sysTask.getId());
+        return CustomResponse.OK("执行成功");
+    }
 }

@@ -22,7 +22,6 @@ import org.springframework.util.ObjectUtils;
 import java.util.List;
 
 /**
- *
  * @Author yuanjg
  * @CreateTime 2020/09/24 15:34
  * @Version 1.0.0
@@ -87,12 +86,19 @@ public class SysTaskServiceImpl extends ServiceImpl<SysTaskMapper, SysTask> impl
         }
     }
 
-    public SysTask getById(String id) {
-        if (StringUtils.isEmpty(id)) {
-            throw new CustomExcption(CustomErrorType.PARAMETER_VALIDATION_ERROR);
+    @Override
+    public void runJobNow(String id) {
+        SysTask sysTask = getById(id);
+        if (ObjectUtils.isEmpty(sysTask)) {
+            throw new CustomExcption(CustomErrorType.DATA_NULL, "任务不存在");
         }
-        return sysTaskMapper.selectById(id);
+        try {
+            quartzManager.runJobNow(sysTask);
+        } catch (Exception e) {
+            throw new CustomExcption(CustomErrorType.TASK_ERROR, "执行出错:" + e.getMessage());
+        }
     }
+
 
     @Override
     public boolean save(SysTask entity) {
@@ -104,6 +110,7 @@ public class SysTaskServiceImpl extends ServiceImpl<SysTaskMapper, SysTask> impl
             throw new CustomExcption(CustomErrorType.DATA_SAVE_FAIL, "分组下的任务名称已存在");
         }
         entity.setId(CustomIdGenerator.getId());
+        entity.setJobStatus(JobStatusEnum.STOP.getCode());
         int insert = sysTaskMapper.insert(entity);
         if (insert != 1) {
             throw new CustomExcption(CustomErrorType.DATA_SAVE_FAIL);
@@ -111,5 +118,11 @@ public class SysTaskServiceImpl extends ServiceImpl<SysTaskMapper, SysTask> impl
         return true;
     }
 
+    public SysTask getById(String id) {
+        if (StringUtils.isEmpty(id)) {
+            throw new CustomExcption(CustomErrorType.PARAMETER_VALIDATION_ERROR);
+        }
+        return sysTaskMapper.selectById(id);
+    }
 
 }

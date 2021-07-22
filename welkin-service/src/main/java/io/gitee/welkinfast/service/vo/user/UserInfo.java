@@ -4,6 +4,7 @@ import io.gitee.welkinfast.service.mapper.dao.SysMenu;
 import io.gitee.welkinfast.service.mapper.dao.SysRole;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @Version 1.0.0
  */
 @Data
-public class UserInfo {
+public class UserInfo implements Serializable {
 
 
     /**

@@ -44,6 +44,9 @@ INSERT INTO `sys_menu` VALUES ('e37a0bd4-8db9-44c6-a7b7-16c879418459', '新增',
 INSERT INTO `sys_menu` VALUES ('29fb5213-80a3-4f12-9b2e-d0aae079d9c5', '修改', '454d7171-b3e4-4568-84af-d17fc8f24f93', NULL, 'sys:dept:update', 2, NULL, 2, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:12:46', 0);
 INSERT INTO `sys_menu` VALUES ('203c7126-b08c-418e-9c5c-c4463ad407b1', '删除', '454d7171-b3e4-4568-84af-d17fc8f24f93', NULL, 'sys:dept:delete', 2, NULL, 2, 'admin', '2020-09-10 20:05:51', 'admin', '2020-09-10 20:12:51', 0);
 
+INSERT INTO sys_menu (id, name, parent_id, url, perms, `type`, icon, order_num, create_by, create_time, last_update_by, last_update_time, del_flag) VALUES('9fe9b14e1349edd3f4b385953c0372bb', '任务管理', '', '/task', 'task', 0, 'el-icon-date', 1, 'welkin', '2021-01-04 16:35:54', 'welkin', '2021-01-04 17:06:31', 0);
+INSERT INTO sys_menu (id, name, parent_id, url, perms, `type`, icon, order_num, create_by, create_time, last_update_by, last_update_time, del_flag) VALUES('b5ab0d8e6b5f9e4636c0035720c0c6b4', '定时任务', '9fe9b14e1349edd3f4b385953c0372bb', '/task/quartz', 'task:quartz:list', 1, 'fa fa-hourglass-half', 0, 'welkin', '2021-01-04 16:42:39', 'welkin', '2021-01-04 17:25:35', 0);
+
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
@@ -68,3 +71,8 @@ INSERT INTO `sys_dept` VALUES ('9', '技术部', '6', 0, 'admin', '2018-09-23 19
 -- ----------------------------
 INSERT INTO chat_friend (user_id, friend_id) VALUES('5948b87a-9edc-4fea-87f2-f56c12b141b8', '77b546e7-a8ea-4076-8161-f76794c3c9d1');
 INSERT INTO chat_friend (user_id, friend_id) VALUES('77b546e7-a8ea-4076-8161-f76794c3c9d1', '5948b87a-9edc-4fea-87f2-f56c12b141b8');
+
+
+
+INSERT INTO sys_task (id, job_name, description, cron_expression, bean_class, job_status, job_group, create_by, create_time, last_update_by, last_update_time) VALUES('5b106375-9b15-4e7b-912c-a627f2cd7830', 'access_token', '更新小程序认证信息', '* 0/50 0/1 * * ?', 'io.gitee.welkinfast.quartz.job.SaveAccessTokenJob', '1', '1', 'admin', '2021-01-09 18:42:31', 'welkin', '2021-03-13 21:44:16');
+INSERT INTO sys_task (id, job_name, description, cron_expression, bean_class, job_status, job_group, create_by, create_time, last_update_by, last_update_time) VALUES('5b106375-9b15-4e7b-912c-a627f2cd7831', 'rest_count', '重置转换次数', '0 0 0 * * ?', 'io.gitee.welkinfast.quartz.job.ResetGifCountJob', '0', '2', 'admin', '2021-01-09 18:42:31', 'welkin', '2021-04-26 15:30:58');

@@ -20,4 +20,7 @@ public interface SysTaskService extends IService<SysTask> {
     SysTask getByNameAndGroup(String name, String group);
 
     void updateByTaskStatus(SysTask sysTask) throws SchedulerException;
+
+    void runJobNow(String id);
+
 }

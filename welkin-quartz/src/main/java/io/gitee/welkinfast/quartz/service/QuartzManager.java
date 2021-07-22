@@ -132,6 +132,10 @@ public class QuartzManager {
     public void pauseJob(SysTask task) throws SchedulerException {
         JobKey jobKey = JobKey.jobKey(task.getJobName(), task.getJobGroup());
         scheduler.pauseJob(jobKey);
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+        if (jobDetail != null){
+            deleteJob(task);
+        }
     }
 
     /**
@@ -142,6 +146,10 @@ public class QuartzManager {
      */
     public void resumeJob(SysTask task) throws SchedulerException {
         JobKey jobKey = JobKey.jobKey(task.getJobName(), task.getJobGroup());
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+        if(jobDetail == null){
+            addJob(task);
+        }
         scheduler.resumeJob(jobKey);
     }
 

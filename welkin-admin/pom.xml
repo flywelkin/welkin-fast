@@ -77,7 +77,6 @@
         </dependency>
 
 
-
         <!-- hibernate 校验 -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -101,38 +100,35 @@
             <groupId>io.gitee.welkinfast</groupId>
             <artifactId>welkin-quartz</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.gitee.welkinfast</groupId>
+            <artifactId>welkin-gif</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.mockito</groupId>-->
+<!--            <artifactId>mockito-core</artifactId>-->
+<!--            <version>2.28.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.powermock</groupId>-->
+<!--            <artifactId>powermock-module-junit4</artifactId>-->
+<!--            <version>2.0.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.powermock</groupId>-->
+<!--            <artifactId>powermock-api-mockito2</artifactId>-->
+<!--            <version>2.0.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>2.28.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>2.0.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>2.0.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacv-platform</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.madgag/animated-gif-lib -->
-        <dependency>
-            <groupId>com.madgag</groupId>
-            <artifactId>animated-gif-lib</artifactId>
-            <version>1.4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.qcloud</groupId>-->
+<!--            <artifactId>cos_api</artifactId>-->
+<!--            <version>5.4.6</version>-->
+<!--        </dependency>-->
     </dependencies>
 
 

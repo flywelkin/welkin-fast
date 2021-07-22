@@ -1,15 +1,21 @@
 # 应用服务 WEB 访问端口
 server:
   port: 21000
+  servlet:
+    context-path: /welkin-fast
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   jackson:
     serialization:
       write-dates-as-timestamps: true
   application:
     name: welkin-fast
   datasource:
-    url: jdbc:mysql://192.168.32.128:3306/welkin-fast?characterEncoding=utf8&useSSL=true&nullCatalogMeansCurrent=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.40.128:3306/welkin-fast?characterEncoding=utf8&useSSL=true&nullCatalogMeansCurrent=true&serverTimezone=GMT%2B8
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -56,20 +62,25 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 
-
-logging:
-  level:
-    root: info
-    io.gitee.welkinfast: info
-    io.gitee.welkinfast.admin.mapper: debug
-
 welkin:
   security:
     auth-key: user_token
     anonymous:
       - /test
+      - /welkin/vidwo/gif
+      - /welkin/gif/count
   jwt:
     issuer: welkin
     base64Secret: 24758638-3739-4030-A497-2137FE072002[www.welkincode.top]
     expiresSecond: 172800
 
+mini:
+  program:
+#    appId: appid
+#    secret: secret
+    cloudEnv: welkin-mini-3ggtet5i19915ff2
+    appId: wx18f373228a801c4d
+    secret: e7661004c0ab40affab51948ef514aa0
+
+logging:
+  config: classpath:logback-stdout.xml
